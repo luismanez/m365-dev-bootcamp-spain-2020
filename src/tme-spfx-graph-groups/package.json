@@ -19,7 +19,11 @@
     "@microsoft/sp-property-pane": "1.11.0",
     "@microsoft/sp-webpart-base": "1.11.0",
     "@microsoft/sp-lodash-subset": "1.11.0",
-    "@microsoft/sp-office-ui-fabric-core": "1.11.0"
+    "@microsoft/sp-office-ui-fabric-core": "1.11.0",
+    "@pnp/common": "^2.0.10",
+    "@pnp/graph": "^2.0.10",
+    "@pnp/logging": "^2.0.10",
+    "@pnp/odata": "^2.0.10"
   },
   "devDependencies": {
     "@types/react": "16.8.8",

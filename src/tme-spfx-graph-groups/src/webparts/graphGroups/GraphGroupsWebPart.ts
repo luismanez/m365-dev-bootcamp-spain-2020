@@ -10,6 +10,7 @@ import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import * as strings from 'GraphGroupsWebPartStrings';
 import GraphGroups from './components/GraphGroups';
 import { IGraphGroupsProps } from './components/IGraphGroupsProps';
+import { graph } from '@pnp/graph';
 
 export interface IGraphGroupsWebPartProps {
   description: string;
@@ -17,11 +18,31 @@ export interface IGraphGroupsWebPartProps {
 
 export default class GraphGroupsWebPart extends BaseClientSideWebPart<IGraphGroupsWebPartProps> {
 
+  private isTeamsMessagingExtension: boolean;
+
+  public onInit(): Promise<void> {
+
+    this.isTeamsMessagingExtension = (this.context as any)._host &&
+                                      (this.context as any)._host._teamsManager &&
+                                      (this.context as any)._host._teamsManager._appContext &&
+                                      (this.context as any)._host._teamsManager._appContext.applicationName &&
+                                      (this.context as any)._host._teamsManager._appContext.applicationName === 'TeamsTaskModuleApplication';
+
+    console.log("isTeamsMessagingExtension", this.isTeamsMessagingExtension);
+
+    return super.onInit().then(_ => {
+      graph.setup({
+        spfxContext: this.context
+      });
+    });
+  }
+
   public render(): void {
     const element: React.ReactElement<IGraphGroupsProps> = React.createElement(
       GraphGroups,
       {
-        description: this.properties.description
+        teamsContext: this.context.sdks.microsoftTeams,
+        isTeamsMessagingExtension: this.isTeamsMessagingExtension
       }
     );
 
