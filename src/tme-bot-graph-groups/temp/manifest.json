@@ -1,14 +1,14 @@
 {
   "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.8/MicrosoftTeams.schema.json",
   "manifestVersion": "1.8",
-  "id": "{{APPLICATION_ID}}",
-  "version": "{{VERSION}}",
-  "packageName": "{{PACKAGE_NAME}}",
+  "id": "5269ee20-1e6b-11eb-92c7-eb61cd47ff4a",
+  "version": "0.0.1",
+  "packageName": "tmebotgraphgroups",
   "developer": {
     "name": "Atlas",
-    "websiteUrl": "https://{{HOSTNAME}}",
-    "privacyUrl": "https://{{HOSTNAME}}/privacy.html",
-    "termsOfUseUrl": "https://{{HOSTNAME}}/tou.html"
+    "websiteUrl": "https://atlasbotcp.azurewebsites.net",
+    "privacyUrl": "https://atlasbotcp.azurewebsites.net/privacy.html",
+    "termsOfUseUrl": "https://atlasbotcp.azurewebsites.net/tou.html"
   },
   "name": {
     "short": "Atlas Groups Bot",
@@ -28,7 +28,7 @@
     {
       "entityId": "719ed260-1e6b-11eb-92c7-eb61cd47ff4a",
       "name": "About Atlas",
-      "contentUrl": "https://{{HOSTNAME}}/atlasGroupBot/aboutAtlas.html",
+      "contentUrl": "https://atlasbotcp.azurewebsites.net/atlasGroupBot/aboutAtlas.html",
       "scopes": [
         "personal"
       ]
@@ -36,7 +36,7 @@
   ],
   "bots": [
     {
-      "botId": "{{MICROSOFT_APP_ID}}",
+      "botId": "7b25b2df-38a7-451a-a22f-86832fa63b90",
       "needsChannelSelector": true,
       "isNotificationOnly": false,
       "scopes": [
@@ -67,7 +67,7 @@
     "messageTeamMembers"
   ],
   "validDomains": [
-    "{{HOSTNAME}}"
+    "atlasbotcp.azurewebsites.net"
   ],
   "showLoadingIndicator": false,
   "isFullScreen": false
