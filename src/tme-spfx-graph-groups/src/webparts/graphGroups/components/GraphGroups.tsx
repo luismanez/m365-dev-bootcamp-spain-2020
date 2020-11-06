@@ -18,8 +18,10 @@ export default class GraphGroups extends React.Component<IGraphGroupsProps, IGra
 
   public componentDidMount(): void {
     graph.groups
+      .setEndpoint("beta")
       .top(20)
       .select("id, displayName, description")
+      .filter("resourceProvisioningOptions/Any(x:x eq 'Team')") // only Teams: https://docs.microsoft.com/en-us/graph/teams-list-all-teams#get-a-list-of-groups-using-beta-apis
       .get()
       .then(groups => {
         this.setState({

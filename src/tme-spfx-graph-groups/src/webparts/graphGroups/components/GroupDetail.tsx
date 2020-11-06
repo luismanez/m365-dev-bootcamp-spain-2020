@@ -37,7 +37,7 @@ export default class GroupDetail extends React.Component<IGroupDetailProps, IGro
           <ActionButton
             iconProps={shareIcon}
             key={this.props.group.id}
-            onClick={() => this.groupClicked(this.props.group)}>Share Group</ActionButton>
+            onClick={() => this.groupClicked(this.props.group)}>Share Team</ActionButton>
           </div>
         </div>
       </div>

@@ -12,6 +12,9 @@ import GraphGroups from './components/GraphGroups';
 import { IGraphGroupsProps } from './components/IGraphGroupsProps';
 import { graph } from '@pnp/graph';
 
+import { initializeIcons } from 'office-ui-fabric-react';
+
+
 export interface IGraphGroupsWebPartProps {
   description: string;
 }
@@ -21,6 +24,8 @@ export default class GraphGroupsWebPart extends BaseClientSideWebPart<IGraphGrou
   private isTeamsMessagingExtension: boolean;
 
   public onInit(): Promise<void> {
+
+    initializeIcons();
 
     this.isTeamsMessagingExtension = (this.context as any)._host &&
                                       (this.context as any)._host._teamsManager &&

@@ -1,9 +1,12 @@
 import { BotDeclaration, PreventIframe } from "express-msteams-host";
 import * as debug from "debug";
 import { DialogSet, DialogState } from "botbuilder-dialogs";
-import { StatePropertyAccessor, CardFactory, TurnContext, MemoryStorage, ConversationState, ActivityTypes, TeamsActivityHandler, MessagingExtensionActionResponse, MessagingExtensionAction } from "botbuilder";
+import { StatePropertyAccessor, CardFactory, TurnContext, MemoryStorage, ConversationState, ActivityTypes, TeamsActivityHandler, MessagingExtensionActionResponse, MessagingExtensionAction, CardAction, ActionTypes } from "botbuilder";
 import HelpDialog from "./dialogs/HelpDialog";
 import WelcomeCard from "./dialogs/WelcomeDialog";
+
+import { graph } from "@pnp/graph-commonjs";
+import { MsalFetchClient } from "@pnp/nodejs-commonjs";
 
 // Initialize debug logging module
 const log = debug("msteams");
@@ -79,20 +82,44 @@ export class AtlasGroupBot extends TeamsActivityHandler {
                 });
             }
         });
-   }
 
-   protected async handleTeamsMessagingExtensionSubmitAction(context: TurnContext, action: MessagingExtensionAction): Promise<MessagingExtensionActionResponse> {
-    const group: any = action.data;
+        graph.setup({
+            graph: {
+                fetchClientFactory: () => {
+                    return new MsalFetchClient({
+                        auth: {
+                            authority: `https://login.microsoftonline.com/${process.env.TENANT_ID}`,
+                            clientId: process.env.GRAPH_APP_ID || '',
+                            clientSecret: process.env.GRAPH_APP_SECRET,
+                        }
+                    });
+                },
+            },
+        });
+    }
 
-    const groupCard = CardFactory.heroCard(group.displayName, group.description, undefined, undefined, undefined);
+    protected async handleTeamsMessagingExtensionSubmitAction(context: TurnContext, action: MessagingExtensionAction): Promise<MessagingExtensionActionResponse> {
+        const group: any = action.data;
 
-    const response: MessagingExtensionActionResponse = {
-        composeExtension: {
-          type: 'result',
-          attachmentLayout: 'list',
-          attachments:  [ groupCard ]
+        const team = await graph.teams.getById(group.id)();
+        console.log(team);
+
+        const cardAction: CardAction = {
+            type: ActionTypes.OpenUrl,
+            title: "Jump to Team",
+            value: team.webUrl
+        };
+
+        const groupCard = CardFactory.heroCard(group.displayName, group.description, [group.thumbnailUrl], [cardAction], undefined);
+
+        const response: MessagingExtensionActionResponse = {
+            composeExtension: {
+                type: 'result',
+                attachmentLayout: 'list',
+                attachments: [groupCard]
+            }
         }
-      }
-      return Promise.resolve(response);
-   }
+
+        return Promise.resolve(response);
+    }
 }
